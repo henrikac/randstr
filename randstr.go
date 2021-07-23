@@ -5,20 +5,28 @@ import (
 	"encoding/base64"
 )
 
-var (
+const (
 	// strLen is the length of the length of the random generated strings.
 	strLen = 16
 	// chars contains all the default characters used to generate random string with Generate().
 	chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 )
 
-// Generate returns a random string that is strLen characters long.
+// Generate returns a random string that is 16 characters long.
 func Generate() (string, error) {
+	return GenerateLen(strLen)
+}
+
+// GenerateLen returns a random string of the specified length.
+func GenerateLen(length int) (string, error) {
+	if length == 0 {
+		return "", nil
+	}
 	b := make([]byte, 1)
 	maxb := 255 - (256 % len(chars))
 	n := len(chars)
-	str := make([]byte, strLen)
-	for i := 0; i < strLen; i++ {
+	str := make([]byte, length)
+	for i := 0; i < length; i++ {
 		_, err := rand.Read(b)
 		if err != nil {
 			return "", err

@@ -21,6 +21,18 @@ func TestGenerate(t *testing.T) {
 	}
 }
 
+func TestGenerateLen(t *testing.T) {
+	for i := 0; i < 20; i++ {
+		str, err := randstr.GenerateLen(i)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if len(str) != i {
+			t.Errorf("Expected string of size: %d\nGot: %d\n", i, len(str))
+		}
+	}
+}
+
 func TestBase64Encoded(t *testing.T) {
 	cache := map[string]struct{}{}
 
@@ -41,6 +53,12 @@ func TestBase64Encoded(t *testing.T) {
 func BenchmarkGenerate(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		randstr.Generate()
+	}
+}
+
+func BenchmarkGenerateLen(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		randstr.GenerateLen(16)
 	}
 }
 
