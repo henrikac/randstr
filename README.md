@@ -1,10 +1,63 @@
 # randstr
 
-TODO: Write description here
+randstr is a module that contains various functions for generating random strings.
+
+## Installation
+
+`go get github.com/henrikac/randstr`
 
 ## Usage
 
-TODO: Write usage instructions here
+### Generate
+`randstr.Generate` returns a random string that consists of the characters a-zA-Z0-9.
+The default size of the generated string is 16 bytes.
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"github.com/henrikac/randstr"
+)
+
+func main() {
+	str, err := randstr.Generate()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("%s\n", str)
+}
+
+// Example output:
+// 4a1Lz3d4yXihvbJX
+```
+
+### Base64Encoded
+`randstr.Base64Encoded` returns a random base64 encoded string.
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"github.com/henrikac/randstr"
+)
+
+func main() {
+	str, err := randstr.Base64Encoded()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("%s\n", str)
+}
+
+// Example output:
+// M72WQsavclA/wLYfxuyr2Q==
+```
 
 ## Contributing
 
