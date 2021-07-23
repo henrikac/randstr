@@ -6,6 +6,8 @@ import (
 	"github.com/henrikac/randstr"
 )
 
+const strLen = 16
+
 func TestGenerate(t *testing.T) {
 	cache := map[string]struct{}{}
 
@@ -13,6 +15,9 @@ func TestGenerate(t *testing.T) {
 		str, err := randstr.Generate()
 		if err != nil {
 			t.Fatal(err)
+		}
+		if len(str) != strLen {
+			t.Errorf("Expected string of length: %d\nGot: %d\n", strLen, len(str))
 		}
 		if _, ok := cache[str]; ok {
 			t.Errorf("%s has already been generated\n", str)
