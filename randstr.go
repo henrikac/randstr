@@ -14,16 +14,21 @@ var (
 
 // Generate returns a random string that is strLen characters long.
 func Generate() (string, error) {
-	byt, err := generateBytes()
-	if err != nil {
-		return "", err
-	}
+	b := make([]byte, 1)
+	maxb := 255 - (256 % len(chars))
+	n := len(chars)
 	str := make([]byte, strLen)
 	for i := 0; i < strLen; i++ {
-		b := byt[i]
-		// TODO: find a better way of doing this
-		idx := int(b) % len(chars) // this has some bias
-		str[i] = chars[idx]
+		_, err := rand.Read(b)
+		if err != nil {
+			return "", err
+		}
+		bint := int(b[0])
+		if bint > maxb { // prevent modulo bias
+			i -= 1
+			continue
+		}
+		str[i] = chars[bint%n]
 	}
 	return string(str), nil
 }
