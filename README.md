@@ -1,6 +1,6 @@
 # randstr
 
-randstr is a module that contains various functions for generating random strings.  
+randstr is a module that contains functions for generating random strings.  
 
 The functions in this module uses the `crypto/rand` package.
 
