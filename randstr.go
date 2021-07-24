@@ -3,6 +3,8 @@ package randstr
 import (
 	"crypto/rand"
 	"encoding/base64"
+	"errors"
+	"strings"
 )
 
 const (
@@ -19,26 +21,35 @@ func Generate() (string, error) {
 
 // GenerateLen returns a random string of the specified length.
 func GenerateLen(length int) (string, error) {
+	if length < 0 {
+		return "", errors.New("invalid length: length must be greater than or equal to 0")
+	}
 	if length == 0 {
 		return "", nil
 	}
-	b := make([]byte, 1)
-	maxb := 255 - (256 % len(chars))
 	n := len(chars)
-	str := make([]byte, length)
-	for i := 0; i < length; i++ {
+	sb := strings.Builder{}
+	sb.Grow(length)
+	b := make([]byte, length+(length/2))
+	maxb := 255 - (256 % n)
+	i := 0
+	for {
 		_, err := rand.Read(b)
 		if err != nil {
 			return "", err
 		}
-		bint := int(b[0])
-		if bint > maxb { // prevent modulo bias
-			i -= 1
-			continue
+		for _, byt := range b {
+			bint := int(byt)
+			if bint > maxb { // prevent modulo bias
+				continue
+			}
+			sb.WriteByte(chars[bint%n])
+			i += 1
+			if i == length {
+				return sb.String(), err
+			}
 		}
-		str[i] = chars[bint%n]
 	}
-	return string(str), nil
 }
 
 // Base64Encoded returns a random base64 encoded string.

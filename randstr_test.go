@@ -11,7 +11,7 @@ const strLen = 16
 func TestGenerate(t *testing.T) {
 	cache := map[string]struct{}{}
 
-	for i := 0; i < 100000; i++ {
+	for i := 0; i < 1000000; i++ {
 		str, err := randstr.Generate()
 		if err != nil {
 			t.Fatal(err)
@@ -41,7 +41,7 @@ func TestGenerateLen(t *testing.T) {
 func TestBase64Encoded(t *testing.T) {
 	cache := map[string]struct{}{}
 
-	for i := 0; i < 100000; i++ {
+	for i := 0; i < 1000000; i++ {
 		str, err := randstr.Base64Encoded()
 		if err != nil {
 			t.Fatal(err)
