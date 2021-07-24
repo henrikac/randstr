@@ -27,28 +27,27 @@ func GenerateLen(length int) (string, error) {
 	if length == 0 {
 		return "", nil
 	}
-	n := len(chars)
-	str := make([]byte, length)
 	b := make([]byte, length+(length/2))
+	_, err := rand.Read(b)
+	if err != nil {
+		return "", err
+	}
+	n := len(chars)
 	maxb := 255 - (256 % n)
+	str := make([]byte, length)
 	i := 0
-	for {
-		_, err := rand.Read(b)
-		if err != nil {
-			return "", err
+	for _, byt := range b {
+		bint := int(byt)
+		if bint > maxb { // prevent modulo bias
+			continue
 		}
-		for _, byt := range b {
-			bint := int(byt)
-			if bint > maxb { // prevent modulo bias
-				continue
-			}
-			str[i] = chars[bint%n]
-			i += 1
-			if i == length {
-				return *(*string)(unsafe.Pointer(&str)), nil
-			}
+		str[i] = chars[bint%n]
+		i += 1
+		if i == length {
+			break
 		}
 	}
+	return *(*string)(unsafe.Pointer(&str)), nil
 }
 
 // Base64Encoded returns a random base64 encoded string.
