@@ -4,7 +4,7 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"errors"
-	"strings"
+	"unsafe"
 )
 
 const (
@@ -28,8 +28,7 @@ func GenerateLen(length int) (string, error) {
 		return "", nil
 	}
 	n := len(chars)
-	sb := strings.Builder{}
-	sb.Grow(length)
+	str := make([]byte, length)
 	b := make([]byte, length+(length/2))
 	maxb := 255 - (256 % n)
 	i := 0
@@ -43,10 +42,10 @@ func GenerateLen(length int) (string, error) {
 			if bint > maxb { // prevent modulo bias
 				continue
 			}
-			sb.WriteByte(chars[bint%n])
+			str[i] = chars[bint%n]
 			i += 1
 			if i == length {
-				return sb.String(), err
+				return *(*string)(unsafe.Pointer(&str)), nil
 			}
 		}
 	}
