@@ -8,9 +8,9 @@ import (
 )
 
 const (
-	// strLen is the length of the length of the random generated strings.
+	// strLen is the default length of the random generated strings.
 	strLen = 16
-	// chars contains all the default characters used to generate random string with Generate().
+	// chars contains all the default characters used to generate random string with the Generate functions.
 	chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 )
 
